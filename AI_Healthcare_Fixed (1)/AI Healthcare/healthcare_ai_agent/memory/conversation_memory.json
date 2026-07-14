@@ -1,0 +1,38 @@
+{
+  "guest": {
+    "conversation_history": [
+      "Help me book an appointment",
+      "nchgd",
+      "i want to a appointment",
+      "appointment",
+      "medication to feave",
+      "plan",
+      "Help me book an appointment",
+      "Help me book an appointment",
+      "Help me book an appointment",
+      "Help me book an appointment",
+      "Help me book an appointment",
+      "Help me book an appointment",
+      "Help me book an appointment",
+      "User: Explain diabetes in detail with causes, symptoms, diagnosis, treatment, prevention, and lifestyle recommendations.",
+      "Assistant: I can assist with treatment tracking and care questions. Please describe the treatment concern. ",
+      "User: Explain diabetes in detail with causes, symptoms, diagnosis, treatment, prevention, and lifestyle recommendations.",
+      "Assistant: I can assist with treatment tracking and care questions. Please describe the treatment concern. ",
+      "User: hi",
+      "Assistant: I am here to help. If this is an emergency, please contact your local emergency services immediately. I can also provide nearby hospital contact information if you share your location. Always consult licensed healthcare professionals for urgent medical attention. ",
+      "User: my name is raju",
+      "Assistant: I am here to help. If this is an emergency, please contact your local emergency services immediately. I can also provide nearby hospital contact information if you share your location. Always consult licensed healthcare professionals for urgent medical attention. ",
+      "User: hi this raju",
+      "Assistant: Hello **Raju**. I am your **AI Healthcare Care Coordinator**. \n\n    *Please note: If you are experiencing a medical emergency, please contact your local emergency services immediately.*\n\n    How can I help you today? I am here to assist you with:\n    *   Understanding **symptoms** and **diseases**\n    *   **Medication** information, dosages, and **side effects**\n    *   **Preventive care** and **lifestyle guidance**\n    *   Explaining **medical terminology**\n    *   Finding **doctor recommendations** or scheduling tips\n\n    Please let me know what health-related questions or concerns you have!",
+      "User: hi",
+      "Assistant: Hello again, **Raju**! \n\nHow can I help you with your health and wellness today? \n\nAs your **AI Healthcare Care Coordinator**, I am here to assist you with:\n*   Explaining **symptoms** or **medical conditions**\n*   Understanding **medications**, dosages, and **side effects**\n*   Providing **lifestyle** and **preventive care** advice\n*   Navigating **doctor appointments** and recommendations\n\n*Reminder: If you are experiencing any urgent or emergency medical symptoms, please seek immediate care from a licensed medical professional or call your local emergency services.*",
+      "User: what is mean by frever",
+      "Assistant: Hello Raju. It sounds like you are asking about a **fever** (which is sometimes misspelled as \"frever\"). \n\nA **fever** is a temporary increase in your body temperature. It is not an illness itself, but rather a sign that your body's immune system is actively fighting off an infection, virus, or other underlying condition.\n\n### Key Facts About Fevers\n*   **Normal Temperature:** A normal body temperature is typically around **98.6\u00b0F (37\u00b0C)**.\n*   **Fever Threshold:** A fever is generally defined as a body temperature of **100.4\u00b0F (38\u00b0C)** or higher.\n*   **Common Symptoms:** Along with a high temperature, you might experience chills, sweating, headache, muscle aches, loss of appetite, or general weakness.\n\n---\n\n### How I Can Help You Manage This\nAs your **Treatment Monitoring specialist**, I am here to help you track your recovery and manage your symptoms safely. Upon your request, I can:\n\n*   **Create a new treatment plan:** I can design a personalized recovery plan for you, including guidance on hydration, rest, temperature-tracking schedules, and over-the-counter fever reducers.\n*   **Update an existing care plan:** If you are already treating an illness, we can adjust your current plan to address this new fever.\n*   **Summarize your treatment progress:** If you share your daily temperature readings and symptoms with me, I can compile a progress summary to help you monitor your recovery or share with your doctor.\n\n---\n\n### \u26a0\ufe0f When to Seek Immediate Medical Care\nWhile many fevers resolve on their own, please seek **emergency medical attention** or consult a doctor immediately if you experience:\n*   A fever rising above **103\u00b0F (39.4\u00b0C)** that does not come down with medication.\n*   A stiff neck, severe headache, or sensitivity to light.\n*   Difficulty breathing or chest pain.\n*   Confusion, extreme drowsiness, or trouble waking up.\n\nWould you like me to help you **create a fever-monitoring treatment plan** today? "
+    ],
+    "patient_history": [],
+    "doctor_history": [],
+    "appointment_history": [],
+    "treatment_history": [],
+    "medication_history": []
+  }
+}

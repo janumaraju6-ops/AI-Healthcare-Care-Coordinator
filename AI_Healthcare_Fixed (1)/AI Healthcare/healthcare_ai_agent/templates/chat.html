@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Healthcare Copilot</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #07111f;
+        --panel: rgba(10, 20, 35, 0.95);
+        --panel-2: rgba(18, 31, 50, 0.95);
+        --border: rgba(255,255,255,0.12);
+        --text: #f6f8fc;
+        --muted: #8ea0ba;
+        --accent: #5b8cff;
+        --accent-strong: #4b6ef5;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, 'Segoe UI', Roboto, sans-serif;
+        background: radial-gradient(circle at top left, #13213d 0%, var(--bg) 55%, #060b14 100%);
+        color: var(--text);
+      }
+      .shell { display: flex; min-height: 100vh; }
+      .sidebar {
+        width: 280px;
+        padding: 20px 16px;
+        background: rgba(5, 10, 18, 0.9);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .brand { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+      .btn { border: 0; border-radius: 999px; padding: 10px 14px; cursor: pointer; color: white; background: linear-gradient(135deg, var(--accent), var(--accent-strong)); }
+      .btn.secondary { background: rgba(255,255,255,0.08); color: var(--text); }
+      .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+      .chip { padding: 7px 10px; border-radius: 999px; background: rgba(255,255,255,0.06); color: var(--muted); font-size: 0.85rem; }
+      .chat-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+      .chat-item { padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.04); color: var(--muted); font-size: 0.95rem; }
+      .main { flex: 1; display: flex; flex-direction: column; }
+      .topbar { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(8, 14, 24, 0.6); }
+      .topbar .pill { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.06); color: var(--muted); font-size: 0.9rem; }
+      .messages { flex: 1; padding: 24px; overflow: auto; display: flex; flex-direction: column; gap: 12px; }
+      .message { max-width: 760px; padding: 14px 16px; border-radius: 18px; line-height: 1.65; box-shadow: 0 10px 28px rgba(0,0,0,0.16); white-space: pre-wrap; }
+      .message.user { align-self: flex-end; background: linear-gradient(135deg, var(--accent), #4f7eff); }
+      .message.assistant { align-self: flex-start; background: rgba(255,255,255,0.06); border: 1px solid var(--border); }
+      .message.loading { color: var(--muted); }
+      .composer { padding: 16px 24px 24px; }
+      .composer-box { display: flex; gap: 10px; align-items: flex-end; padding: 10px 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.06); border-radius: 18px; }
+      .composer-box textarea { flex: 1; border: 0; outline: 0; resize: none; background: transparent; color: var(--text); min-height: 48px; font-size: 1rem; font-family: inherit; }
+      .composer-box textarea::placeholder { color: #7d8ba5; }
+      .toolbar { display: flex; gap: 8px; margin-top: 10px; color: var(--muted); font-size: 0.9rem; }
+      .toolbar button { border: 0; border-radius: 999px; padding: 8px 10px; background: rgba(255,255,255,0.06); color: var(--text); cursor: pointer; }
+      .hint { color: var(--muted); font-size: 0.95rem; }
+      .suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 12px; }
+      .suggestion { border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text); border-radius: 999px; padding: 8px 12px; cursor: pointer; font-size: 0.92rem; }
+      @media (max-width: 900px) { .sidebar { display: none; } .messages { padding: 16px; } .composer { padding: 12px 16px 16px; } }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">🩺 Healthcare Copilot</div>
+        <button class="btn" onclick="newChat()">+ New Chat</button>
+        <button class="btn secondary" onclick="uploadFile()">📎 Upload Files</button>
+        <div class="chip-row">
+          <span class="chip">Appointments</span>
+          <span class="chip">Medication</span>
+          <span class="chip">Treatment</span>
+        </div>
+        <div class="chat-list">
+          <div class="chat-item">Appointment planning</div>
+          <div class="chat-item">Medication reminders</div>
+          <div class="chat-item">Treatment summary</div>
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <strong>Healthcare AI Assistant</strong>
+            <div class="hint">Appointments, medication support, treatment insights, and reports</div>
+          </div>
+          <div class="pill">Secure • Fast • Helpful</div>
+        </header>
+        <section class="messages" id="messages">
+          <div class="message assistant">Hello! I can help with appointments, medication reminders, treatment plans, and healthcare report insights.</div>
+          <div class="suggestions">
+            <button class="suggestion" onclick="setPrompt('Help me book an appointment')">Book appointment</button>
+            <button class="suggestion" onclick="setPrompt('What medications should I track today?')">Track medications</button>
+            <button class="suggestion" onclick="setPrompt('Summarize my treatment plan')">Treatment summary</button>
+          </div>
+        </section>
+        <section class="composer">
+          <div class="composer-box">
+            <textarea id="prompt" placeholder="Ask about your care plan, medications, or reports..."></textarea>
+            <button class="btn" onclick="sendMessage()">Send</button>
+          </div>
+          <div class="toolbar">
+            <button onclick="uploadFile()">📎 Files</button>
+            <button onclick="startVoiceInput()">🎤 Voice</button>
+          </div>
+        </section>
+      </main>
+    </div>
+    <input id="file-input" type="file" hidden />
+    <script>
+      const messages = document.getElementById('messages');
+      const prompt = document.getElementById('prompt');
+      const fileInput = document.getElementById('file-input');
+      let recognition = null;
+
+      function appendMessage(text, role) {
+        const bubble = document.createElement('div');
+        bubble.className = `message ${role}`;
+        bubble.textContent = text;
+        messages.appendChild(bubble);
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      function setPrompt(text) {
+        prompt.value = text;
+        prompt.focus();
+      }
+
+      function newChat() {
+        messages.innerHTML = `
+          <div class="message assistant">Hello! I can help with appointments, medication reminders, treatment plans, and healthcare report insights.</div>
+          <div class="suggestions">
+            <button class="suggestion" onclick="setPrompt('Help me book an appointment')">Book appointment</button>
+            <button class="suggestion" onclick="setPrompt('What medications should I track today?')">Track medications</button>
+            <button class="suggestion" onclick="setPrompt('Summarize my treatment plan')">Treatment summary</button>
+          </div>
+        `;
+      }
+
+      function showLoading() {
+        const loader = document.createElement('div');
+        loader.className = 'message assistant loading';
+        loader.innerHTML = 'Thinking<span style="display:inline-block; animation: pulse 1s infinite;">...</span>';
+        messages.appendChild(loader);
+        messages.scrollTop = messages.scrollHeight;
+        return loader;
+      }
+
+      async function sendMessage() {
+        const text = prompt.value.trim();
+        if (!text) return;
+        appendMessage(text, 'user');
+        prompt.value = '';
+        const loader = showLoading();
+        try {
+          const token = localStorage.getItem('access_token');
+          const headers = { 'Content-Type': 'application/json' };
+          if (token) headers.Authorization = `Bearer ${token}`;
+          const response = await fetch('/api/assistant/chat', { method: 'POST', headers, body: JSON.stringify({ message: text }) });
+          const data = await response.json();
+          loader.textContent = data.result || 'No response';
+          loader.className = 'message assistant';
+        } catch (error) {
+          loader.textContent = 'The assistant is currently unavailable.';
+          loader.className = 'message assistant';
+        }
+      }
+
+      prompt.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          sendMessage();
+        }
+      });
+
+      function uploadFile() {
+        fileInput.click();
+      }
+
+      fileInput.addEventListener('change', async () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+          const token = localStorage.getItem('access_token');
+          const headers = {};
+          if (token) headers.Authorization = `Bearer ${token}`;
+          const response = await fetch('/api/assistant/upload', { method: 'POST', headers, body: formData });
+          const data = await response.json();
+          appendMessage(`Uploaded ${data.file_name || 'file'} successfully. ${data.summary || ''}`, 'assistant');
+        } catch (error) {
+          appendMessage('File upload failed.', 'assistant');
+        } finally {
+          fileInput.value = '';
+        }
+      });
+
+      function startVoiceInput() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+          appendMessage('Voice input is not available in this browser.', 'assistant');
+          return;
+        }
+        if (!recognition) {
+          recognition = new SpeechRecognition();
+          recognition.lang = 'en-US';
+          recognition.continuous = false;
+          recognition.interimResults = false;
+          recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            prompt.value = transcript;
+          };
+        }
+        recognition.start();
+      }
+    </script>
+  </body>
+</html>

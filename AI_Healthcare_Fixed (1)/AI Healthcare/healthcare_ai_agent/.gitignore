@@ -1,0 +1,9 @@
+﻿.venv/
+__pycache__/
+*.pyc
+healthcare_ai.db
+.env
+.streamlit/secrets.toml
+uploads/
+.pytest_cache/
+*.log

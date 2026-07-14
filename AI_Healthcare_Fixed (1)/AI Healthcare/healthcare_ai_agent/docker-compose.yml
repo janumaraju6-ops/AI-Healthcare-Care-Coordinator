@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  healthcare-agent:
+    build: .
+    container_name: healthcare_agent
+    ports:
+      - '8000:8000'
+    environment:
+      - DATABASE_URL=sqlite:///./healthcare_ai.db
+      - SECRET_KEY=your_super_secret_key
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=60
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/google_credentials.json
+      - GEMINI_MODEL_NAME=gemini-advanced
+      - EMAIL_SMTP_SERVER=smtp.example.com
+      - EMAIL_SMTP_PORT=587
+      - EMAIL_USERNAME=you@example.com
+      - EMAIL_PASSWORD=super_secret_password
+    volumes:
+      - .:/app
